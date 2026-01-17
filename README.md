@@ -12,6 +12,3 @@ NBTExplorer 3 是一款基于 NBTExplorer 2.0 的 [Minecraft](https://www.minecr
 
 ## 系统要求
 Windows XP 或更高版本，.NET Framework 2.0 或更高版本。
-
-## 下载
- [NBTExplorer-2.0-2.8.0.msi](https://github.com/foxypiratecove37350/NBTExplorer-2.0/releases/download/v2.8.0-win/NBTExplorer-2.0-2.8.0.msi)
