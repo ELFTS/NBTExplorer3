@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,24 +21,28 @@ namespace NBTExplorer.Windows.Search
             _selectOperator.SelectedIndex = 0;
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public string RuleGroupName
         {
             get { return _ruleGroup.Text; }
             set { _ruleGroup.Text = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public string TagName
         {
             get { return _textName.Text; }
             set { _textName.Text = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public string TagValue
         {
             get { return _textValue.Text; }
             set { _textValue.Text = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public StringOperator Operator
         {
             get { return (StringOperator)_selectOperator.SelectedItem; }

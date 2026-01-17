@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -375,7 +375,7 @@ namespace NBTExplorer.Windows
             }
         }
 
-        private void Validate ()
+        private new void Validate ()
         {
             if (_groupX.LocalChunk.HasValue && _groupZ.LocalChunk.HasValue)
                 _findButton.Enabled = true;

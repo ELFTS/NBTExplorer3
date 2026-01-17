@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace NBTExplorer.Windows
@@ -31,6 +32,7 @@ namespace NBTExplorer.Windows
             get { return _invalidNames; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public bool AllowEmpty { get; set; }
 
         public bool IsModified

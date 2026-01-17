@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -25,8 +26,9 @@ namespace NBTExplorer.Windows
             };
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public string WatermarkText { get; set; }
-
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public bool WatermarkActive { get; set; }
 
         public void RemoveWatermak ()

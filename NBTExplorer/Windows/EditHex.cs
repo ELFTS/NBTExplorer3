@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Be.Windows.Forms;
 using System.IO;
@@ -180,7 +180,7 @@ namespace NBTExplorer.Windows
                 _hexBox = new HexBox() {
                     Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
                     Font = new Font("Courier New", 9F, FontStyle.Regular, GraphicsUnit.Point, 0),
-                    LineInfoForeColor = Color.Empty,
+                    InfoForeColor = Color.Empty,
                     LineInfoVisible = true,
                     Location = new Point(0, 0),
                     ShadowSelectionColor = Color.FromArgb(100, 60, 188, 255),
@@ -279,11 +279,11 @@ namespace NBTExplorer.Windows
 
         private class FixedByteProvider : DynamicByteProvider
         {
-            public FixedByteProvider (byte[] data)
+            public FixedByteProvider(byte[] data)
                 : base(data)
             { }
 
-            public override bool SupportsInsertBytes ()
+            public new bool SupportsInsertBytes()
             {
                 return false;
             }
@@ -296,7 +296,7 @@ namespace NBTExplorer.Windows
 
         private Dictionary<TabPage, EditView> _views = new Dictionary<TabPage, EditView>();
 
-        public HexEditor (string tagName, byte[] data, int bytesPerElem)
+        public HexEditor(string tagName, byte[] data, int bytesPerElem)
         {
             InitializeComponent();
 
@@ -310,7 +310,8 @@ namespace NBTExplorer.Windows
 
             EditView hexView = null;
 
-            if (!IsMono()) {
+            if (!IsMono())
+            {
                 hexView = new HexView(statusStrip1, bytesPerElem);
                 hexView.Initialize();
                 hexView.SetRawData(data);
@@ -320,11 +321,13 @@ namespace NBTExplorer.Windows
                 viewTabs.TabPages.Add(hexView.TabPage);
             }
 
-            if (bytesPerElem > 1 || IsMono()) {
+            if (bytesPerElem > 1 || IsMono())
+            {
                 textView.Activate();
                 viewTabs.SelectedTab = textView.TabPage;
             }
-            else {
+            else
+            {
                 hexView.Activate();
                 viewTabs.SelectedTab = hexView.TabPage;
             }
@@ -340,7 +343,7 @@ namespace NBTExplorer.Windows
             Array.Copy(data, _data, data.Length);
         }
 
-        private bool IsMono ()
+        private bool IsMono()
         {
             return Type.GetType("Mono.Runtime") != null;
         }
@@ -355,7 +358,7 @@ namespace NBTExplorer.Windows
             get { return _modified; }
         }
 
-        private void HandleTabChanged (object sender, TabControlCancelEventArgs e)
+        private void HandleTabChanged(object sender, TabControlCancelEventArgs e)
         {
             if (e.Action != TabControlAction.Selecting)
                 return;
@@ -372,7 +375,7 @@ namespace NBTExplorer.Windows
             newView.Activate();
         }
 
-        private void Apply ()
+        private void Apply()
         {
             EditView view = _views[viewTabs.SelectedTab];
             _data = view.GetRawData();
@@ -381,14 +384,15 @@ namespace NBTExplorer.Windows
             Close();
         }
 
-        private String RawToText (byte[] data)
+        private String RawToText(byte[] data)
         {
             return RawToText(data, _bytesPerElem);
         }
 
-        private static String RawToText (byte[] data, int bytesPerElem)
+        private static String RawToText(byte[] data, int bytesPerElem)
         {
-            switch (bytesPerElem) {
+            switch (bytesPerElem)
+            {
                 case 1: return RawToText(data, bytesPerElem, 16);
                 case 2: return RawToText(data, bytesPerElem, 8);
                 case 4: return RawToText(data, bytesPerElem, 4);
@@ -397,15 +401,17 @@ namespace NBTExplorer.Windows
             }
         }
 
-        private static String RawToText (byte[] data, int bytesPerElem, int elementsPerLine)
+        private static String RawToText(byte[] data, int bytesPerElem, int elementsPerLine)
         {
             StringBuilder builder = new StringBuilder();
 
-            for (int i = 0; i < data.Length; i += bytesPerElem) {
+            for (int i = 0; i < data.Length; i += bytesPerElem)
+            {
                 if (data.Length - i < bytesPerElem)
                     break;
 
-                switch (bytesPerElem) {
+                switch (bytesPerElem)
+                {
                     case 1:
                         builder.Append(((sbyte)data[i]).ToString());
                         break;
@@ -432,20 +438,22 @@ namespace NBTExplorer.Windows
             return builder.ToString();
         }
 
-        private byte[] TextToRaw (string text)
+        private byte[] TextToRaw(string text)
         {
             return TextToRaw(text, _bytesPerElem);
         }
 
-        private static byte[] TextToRaw (string text, int bytesPerElem)
+        private static byte[] TextToRaw(string text, int bytesPerElem)
         {
             string[] items = text.Split(null as char[], StringSplitOptions.RemoveEmptyEntries);
             byte[] data = new byte[bytesPerElem * items.Length];
 
-            for (int i = 0; i < items.Length; i++) {
+            for (int i = 0; i < items.Length; i++)
+            {
                 int index = i * bytesPerElem;
 
-                switch (bytesPerElem) {
+                switch (bytesPerElem)
+                {
                     case 1:
                         sbyte val1;
                         if (sbyte.TryParse(items[i], out val1))
@@ -454,7 +462,8 @@ namespace NBTExplorer.Windows
 
                     case 2:
                         short val2;
-                        if (short.TryParse(items[i], out val2)) {
+                        if (short.TryParse(items[i], out val2))
+                        {
                             byte[] buffer = BitConverter.GetBytes(val2);
                             Array.Copy(buffer, 0, data, index, 2);
                         }
@@ -462,7 +471,8 @@ namespace NBTExplorer.Windows
 
                     case 4:
                         int val4;
-                        if (int.TryParse(items[i], out val4)) {
+                        if (int.TryParse(items[i], out val4))
+                        {
                             byte[] buffer = BitConverter.GetBytes(val4);
                             Array.Copy(buffer, 0, data, index, 4);
                         }
@@ -470,7 +480,8 @@ namespace NBTExplorer.Windows
 
                     case 8:
                         long val8;
-                        if (long.TryParse(items[i], out val8)) {
+                        if (long.TryParse(items[i], out val8))
+                        {
                             byte[] buffer = BitConverter.GetBytes(val8);
                             Array.Copy(buffer, 0, data, index, 8);
                         }
@@ -486,7 +497,11 @@ namespace NBTExplorer.Windows
             try {
                 using (FileStream fstr = File.OpenRead(path)) {
                     _data = new byte[fstr.Length];
-                    fstr.Read(_data, 0, (int)fstr.Length);
+                    int bytesRead = fstr.Read(_data, 0, (int)fstr.Length);
+                    if (bytesRead < fstr.Length)
+                    {
+                        Array.Resize(ref _data, bytesRead);
+                    }
 
                     EditView view = _views[viewTabs.SelectedTab];
                     view.SetRawData(_data);
@@ -504,7 +519,11 @@ namespace NBTExplorer.Windows
             try {
                 using (FileStream fstr = File.OpenRead(path)) {
                     byte[] raw = new byte[fstr.Length];
-                    fstr.Read(raw, 0, (int)fstr.Length);
+                    int bytesRead = fstr.Read(raw, 0, (int)fstr.Length);
+                    if (bytesRead < fstr.Length)
+                    {
+                        Array.Resize(ref raw, bytesRead);
+                    }
 
                     string text = System.Text.Encoding.UTF8.GetString(raw, 0, raw.Length);
                     _data = TextToRaw(text);
@@ -520,25 +539,30 @@ namespace NBTExplorer.Windows
             }
         }
 
-        private void ExportRaw (string path)
+        private void ExportRaw(string path)
         {
-            try {
-                using (FileStream fstr = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None)) {
+            try
+            {
+                using (FileStream fstr = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
                     EditView view = _views[viewTabs.SelectedTab];
                     byte[] data = view.GetRawData();
 
                     fstr.Write(data, 0, data.Length);
                 }
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 MessageBox.Show("Failed to export data to \"" + path + "\"\n\nException: " + e.Message);
             }
         }
 
-        private void ExportText (string path)
+        private void ExportText(string path)
         {
-            try {
-                using (FileStream fstr = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None)) {
+            try
+            {
+                using (FileStream fstr = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
                     EditView view = _views[viewTabs.SelectedTab];
                     string text = RawToText(view.GetRawData());
 
@@ -546,25 +570,28 @@ namespace NBTExplorer.Windows
                     fstr.Write(data, 0, data.Length);
                 }
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 MessageBox.Show("Failed to export data to \"" + path + "\"\n\nException: " + e.Message);
             }
         }
 
-        private void _buttonOK_Click (object sender, EventArgs e)
+        private void _buttonOK_Click(object sender, EventArgs e)
         {
             Apply();
         }
 
-        private void _buttonImport_Click (object sender, EventArgs e)
+        private void _buttonImport_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog()) {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
                 ofd.RestoreDirectory = true;
                 ofd.Multiselect = false;
                 ofd.Filter = "Binary Data|*|Text Data (*.txt)|*.txt";
                 ofd.FilterIndex = 0;
 
-                if (ofd.ShowDialog() == DialogResult.OK) {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
                     if (Path.GetExtension(ofd.FileName) == ".txt")
                         ImportText(ofd.FileName);
                     else
@@ -573,15 +600,17 @@ namespace NBTExplorer.Windows
             }
         }
 
-        private void _buttonExport_Click (object sender, EventArgs e)
+        private void _buttonExport_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog sfd = new SaveFileDialog()) {
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
                 sfd.RestoreDirectory = true;
                 sfd.Filter = "Binary Data|*|Text Data (*.txt)|*.txt";
                 sfd.FilterIndex = 0;
                 sfd.OverwritePrompt = true;
 
-                if (sfd.ShowDialog() == DialogResult.OK) {
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
                     if (Path.GetExtension(sfd.FileName) == ".txt")
                         ExportText(sfd.FileName);
                     else

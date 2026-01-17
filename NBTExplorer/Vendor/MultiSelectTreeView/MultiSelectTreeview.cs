@@ -14,7 +14,8 @@ namespace NBTExplorer.Vendor.MultiSelectTreeView
 		#region Selected Node(s) Properties
 
 		private List<TreeNode> m_SelectedNodes = null;		
-		public List<TreeNode> SelectedNodes
+		[System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public List<TreeNode> SelectedNodes
 		{
 			get
 			{
@@ -39,7 +40,8 @@ namespace NBTExplorer.Vendor.MultiSelectTreeView
 
 		// Note we use the new keyword to Hide the native treeview's SelectedNode property.
 		private TreeNode m_SelectedNode;
-		public new TreeNode SelectedNode
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public new TreeNode SelectedNode
 		{
 			get { return m_SelectedNode; }
 			set

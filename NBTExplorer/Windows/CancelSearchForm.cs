@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace NBTExplorer.Windows
 {
@@ -9,6 +10,7 @@ namespace NBTExplorer.Windows
             InitializeComponent();
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public string SearchPathLabel
         {
             get { return _searchPathLabel.Text; }
