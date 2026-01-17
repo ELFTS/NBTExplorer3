@@ -11,4 +11,4 @@ NBTExplorer 3 是一款基于 NBTExplorer 2.0 的 [Minecraft](https://www.minecr
 * Cubic Chunks region files (r2*.mcr, r2*.mca)
 
 ## 系统要求
-Windows XP 或更高版本，.NET Framework 2.0 或更高版本。
+Windows 7 或更高版本，.NET 9.0
