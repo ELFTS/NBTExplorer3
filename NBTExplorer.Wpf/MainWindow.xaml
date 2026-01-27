@@ -1,0 +1,284 @@
+<Window x:Class="NBTExplorer.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:NBTExplorer.Wpf.ViewModels"
+        xmlns:nbt="clr-namespace:Substrate.Nbt;assembly=Substrate"
+        mc:Ignorable="d"
+        Title="NBTExplorer WPF" Height="450" Width="800">
+    <Window.InputBindings>
+        <!-- File Operations -->
+        <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenFileCommand}" />
+        <KeyBinding Key="O" Modifiers="Control+Shift" Command="{Binding OpenFolderCommand}" />
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}" />
+        
+        <!-- Edit Operations -->
+        <KeyBinding Key="X" Modifiers="Control" Command="{Binding CutNodeCommand}" />
+        <KeyBinding Key="C" Modifiers="Control" Command="{Binding CopyNodeCommand}" />
+        <KeyBinding Key="V" Modifiers="Control" Command="{Binding PasteNodeCommand}" />
+        <KeyBinding Key="Delete" Command="{Binding DeleteNodeCommand}" />
+        <KeyBinding Key="F2" Command="{Binding RenameNodeCommand}" />
+        
+        <!-- Search Operations -->
+        <KeyBinding Key="F" Modifiers="Control" Command="{Binding FindCommand}" />
+        <KeyBinding Key="F3" Command="{Binding FindNextCommand}" />
+        <KeyBinding Key="H" Modifiers="Control" Command="{Binding FindReplaceCommand}" />
+    </Window.InputBindings>
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="ToolBarButtonStyle">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Image" x:Key="ToolBarImageStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="False">
+                    <Setter Property="Opacity" Value="0.5" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open..." Command="{Binding OpenFileCommand}" />
+                <MenuItem Header="Open _Folder..." Command="{Binding OpenFolderCommand}" />
+                <MenuItem Header="Open Minecraft _Save Folder" Command="{Binding OpenMinecraftSaveFolderCommand}" />
+                <MenuItem Header="Recent Files" ItemsSource="{Binding RecentFilesWithNumbers}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Header" Value="{Binding Display}" />
+                            <Setter Property="Command" Value="{Binding DataContext.OpenRecentCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
+                            <Setter Property="CommandParameter" Value="{Binding Path}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                <MenuItem Header="Recent Folders" ItemsSource="{Binding RecentDirectoriesWithNumbers}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Header" Value="{Binding Display}" />
+                            <Setter Property="Command" Value="{Binding DataContext.OpenRecentCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
+                            <Setter Property="CommandParameter" Value="{Binding Path}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="_Save" Command="{Binding SaveCommand}" />
+                <Separator />
+                <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="Cut" Command="{Binding CutNodeCommand}" />
+                <MenuItem Header="Copy" Command="{Binding CopyNodeCommand}" />
+                <MenuItem Header="Paste" Command="{Binding PasteNodeCommand}" />
+                <Separator />
+                <MenuItem Header="Rename" Command="{Binding RenameNodeCommand}" />
+                <MenuItem Header="Edit Value" Command="{Binding EditValueNodeCommand}" />
+                <MenuItem Header="Delete" Command="{Binding DeleteNodeCommand}" />
+                <Separator />
+                <MenuItem Header="Move Up" Command="{Binding MoveUpNodeCommand}" />
+                <MenuItem Header="Move Down" Command="{Binding MoveDownNodeCommand}" />
+                <Separator />
+                <MenuItem Header="Open in Explorer" Command="{Binding OpenInExplorerCommand}" />
+            </MenuItem>
+            <MenuItem Header="_Search">
+                 <MenuItem Header="Find..." Command="{Binding FindCommand}" />
+                 <MenuItem Header="Find Next" Command="{Binding FindNextCommand}" />
+                 <MenuItem Header="Find _Block..." Command="{Binding FindBlockCommand}" />
+                 <Separator />
+                 <MenuItem Header="Replace..." Command="{Binding FindReplaceCommand}" />
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="Options..." Command="{Binding OpenSettingsCommand}" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="About" Command="{Binding AboutCommand}" />
+            </MenuItem>
+        </Menu>
+        
+        <ToolBarTray Grid.Row="1">
+            <ToolBar>
+                <Button Command="{Binding OpenFileCommand}" ToolTip="Open NBT Data Source" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/folder-open.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding OpenFolderCommand}" ToolTip="Open Folder" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/folder-open-document.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding SaveCommand}" ToolTip="Save All Modified Tags" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/save.ico" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Separator />
+                <Button Command="{Binding FindCommand}" ToolTip="Find" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/find.ico" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding FindNextCommand}" ToolTip="Find Next" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/find_next.ico" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Separator />
+                <Button Command="{Binding RefreshNodeCommand}" ToolTip="Refresh Content From Disk" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/refresh.ico" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Separator />
+                <Button Command="{Binding CutNodeCommand}" ToolTip="Cut" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/cut.ico" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CopyNodeCommand}" ToolTip="Copy" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/copy.ico" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding PasteNodeCommand}" ToolTip="Paste" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/paste.ico" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Separator />
+                <Button Command="{Binding RenameNodeCommand}" ToolTip="Rename Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/rename.ico" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding EditValueNodeCommand}" ToolTip="Edit Tag Value" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/edit.ico" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding DeleteNodeCommand}" ToolTip="Delete Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/cross.ico" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Separator />
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_BYTE}" ToolTip="Add Byte Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/document-attribute-b.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_SHORT}" ToolTip="Add Short Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/document-attribute-s.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_INT}" ToolTip="Add Int Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/document-attribute-i.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_LONG}" ToolTip="Add Long Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/document-attribute-l.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_FLOAT}" ToolTip="Add Float Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/document-attribute-f.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_DOUBLE}" ToolTip="Add Double Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/document-attribute-d.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_BYTE_ARRAY}" ToolTip="Add Byte Array Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/edit-code-b.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_INT_ARRAY}" ToolTip="Add Int Array Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/edit-code-i.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_LONG_ARRAY}" ToolTip="Add Long Array Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/edit-code-l.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_STRING}" ToolTip="Add String Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/edit-small-caps.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_LIST}" ToolTip="Add List Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/edit-list.png" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+                <Button Command="{Binding CreateTagNodeCommand}" CommandParameter="{x:Static nbt:TagType.TAG_COMPOUND}" ToolTip="Add Compound Tag" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Source="/Resources/box.ico" Width="16" Height="16" Style="{StaticResource ToolBarImageStyle}"/>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="200"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" MinWidth="300"/>
+            </Grid.ColumnDefinitions>
+            
+            <TreeView Grid.Column="0" ItemsSource="{Binding RootNodes}" SelectedItemChanged="TreeView_SelectedItemChanged" AllowDrop="True" Drop="TreeView_Drop" DragEnter="TreeView_DragEnter" PreviewMouseMove="TreeView_PreviewMouseMove"
+                      VirtualizingPanel.IsVirtualizing="True"
+                      VirtualizingPanel.VirtualizationMode="Recycling">
+            <TreeView.Resources>
+                <ContextMenu x:Key="NodeContextMenu">
+                    <MenuItem Header="Edit Value" Command="{Binding EditValueCommand}" />
+                    <MenuItem Header="Rename" Command="{Binding RenameCommand}" />
+                    <Separator />
+                    <MenuItem Header="Cut" Command="{Binding CutCommand}" />
+                    <MenuItem Header="Copy" Command="{Binding CopyCommand}" />
+                    <MenuItem Header="Paste" Command="{Binding PasteCommand}" />
+                    <Separator />
+                    <MenuItem Header="Delete" Command="{Binding DeleteCommand}" />
+                    <Separator />
+                    <MenuItem Header="Move Up" Command="{Binding MoveUpCommand}" />
+                    <MenuItem Header="Move Down" Command="{Binding MoveDownCommand}" />
+                    <Separator />
+                    <MenuItem Header="Open in Explorer" Command="{Binding OpenInExplorerCommand}" />
+                    <Separator />
+                    <MenuItem Header="Add Byte" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_BYTE}" />
+                    <MenuItem Header="Add Short" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_SHORT}" />
+                    <MenuItem Header="Add Int" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_INT}" />
+                    <MenuItem Header="Add Long" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_LONG}" />
+                    <MenuItem Header="Add Float" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_FLOAT}" />
+                    <MenuItem Header="Add Double" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_DOUBLE}" />
+                    <MenuItem Header="Add Byte Array" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_BYTE_ARRAY}" />
+                    <MenuItem Header="Add String" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_STRING}" />
+                    <MenuItem Header="Add List" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_LIST}" />
+                    <MenuItem Header="Add Compound" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_COMPOUND}" />
+                    <MenuItem Header="Add Int Array" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_INT_ARRAY}" />
+                    <MenuItem Header="Add Long Array" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_LONG_ARRAY}" />
+                    <MenuItem Header="Add Short Array" Command="{Binding CreateTagCommand}" CommandParameter="{x:Static nbt:TagType.TAG_SHORT_ARRAY}" />
+                </ContextMenu>
+            </TreeView.Resources>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type vm:NodeViewModel}" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Icon}" Width="16" Height="16" Margin="0,0,5,0" />
+                        <TextBlock Text="{Binding Display}" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <Setter Property="ContextMenu" Value="{StaticResource NodeContextMenu}" />
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+            </TreeView>
+            
+            <GridSplitter Grid.Column="1" Width="5" ResizeDirection="Columns" Background="#E0E0E0" />
+            
+            <Border Grid.Column="2" BorderBrush="#E0E0E0" BorderThickness="1,0,0,0" Background="#F9F9F9">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" Text="Node Details" FontWeight="Bold" Margin="10,10,0,5" />
+                    <ScrollViewer Grid.Row="1" Margin="10">
+                        <StackPanel>
+                            <TextBlock x:Name="DetailName" Margin="0,0,0,5" />
+                            <TextBlock x:Name="DetailType" Margin="0,0,0,5" />
+                            <TextBlock x:Name="DetailPath" Margin="0,0,0,5" />
+                            <TextBlock x:Name="DetailValue" Margin="0,0,0,5" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+        
+        <StatusBar Grid.Row="3" Background="#F0F0F0" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
+            <StatusBarItem>
+                <TextBlock x:Name="StatusText" Text="Ready" Margin="5,0,0,0" />
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock x:Name="NodeInfo" Text="No node selected" Margin="0,0,5,0" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

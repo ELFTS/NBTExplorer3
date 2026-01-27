@@ -1,0 +1,37 @@
+<Window x:Class="NBTExplorer.Wpf.Views.CreateNodeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Create Tag" Height="180" Width="300"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="NameLabel" Text="Name:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBox x:Name="NameTextBox" Grid.Column="1" VerticalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="SizeLabel" Text="Size:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBox x:Name="SizeTextBox" Grid.Column="1" VerticalAlignment="Center" Text="0"/>
+        </Grid>
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" IsDefault="True" Width="75" Margin="0,0,10,0" Click="OkButton_Click"/>
+            <Button Content="Cancel" IsCancel="True" Width="75" Click="CancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,33 @@
+<Window x:Class="NBTExplorer.Wpf.Views.EditByteArrayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Edit Hex Data" Height="300" Width="500"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Text="Edit data (Hex):" Grid.Row="0" Margin="0,0,0,5"/>
+        <TextBox x:Name="HexTextBox" Grid.Row="1" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="0,0,0,10" FontFamily="Consolas, Courier New, Monospace" TextWrapping="Wrap"/>
+        
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="0">
+                <Button Content="Import..." Width="75" Margin="0,0,10,0" Click="ImportButton_Click"/>
+                <Button Content="Export..." Width="75" Click="ExportButton_Click"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                <Button Content="OK" IsDefault="True" Width="75" Margin="0,0,10,0" Click="OkButton_Click"/>
+                <Button Content="Cancel" IsCancel="True" Width="75" Click="CancelButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

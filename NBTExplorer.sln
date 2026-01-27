@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.1.11312.151
@@ -8,6 +7,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBTUtil", "NBTUtil\NBTUtil.csproj", "{5AAA2DAC-4328-49B8-919E-F735395AF2B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBTExplorer", "NBTExplorer\NBTExplorer.csproj", "{C5234748-73D2-41E9-80C8-7469948D683E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBTExplorer.Wpf", "NBTExplorer.Wpf\NBTExplorer.Wpf.csproj", "{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,9 +98,32 @@ Global
 		{C5234748-73D2-41E9-80C8-7469948D683E}.Release|x64.Build.0 = Release|Any CPU
 		{C5234748-73D2-41E9-80C8-7469948D683E}.Release|x86.ActiveCfg = Release|Any CPU
 		{C5234748-73D2-41E9-80C8-7469948D683E}.Release|x86.Build.0 = Release|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.AppStore|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.AppStore|Any CPU.Build.0 = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.AppStore|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.AppStore|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.AppStore|x64.ActiveCfg = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.AppStore|x64.Build.0 = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.AppStore|x86.ActiveCfg = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.AppStore|x86.Build.0 = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Debug|x64.Build.0 = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Debug|x86.Build.0 = Debug|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Release|x64.ActiveCfg = Release|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Release|x64.Build.0 = Release|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Release|x86.ActiveCfg = Release|Any CPU
+		{5A23D7CC-CCC6-4398-A73E-CEC21BE40172}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-
 EndGlobal
